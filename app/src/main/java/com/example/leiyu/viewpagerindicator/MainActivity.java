@@ -4,12 +4,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.example.indicator.PagerSlidingTabStrip;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseAppCompatActivity {
 
     PagerSlidingTabStrip mPagerSlidingTabStrip;
     PagerSlidingTabStrip mPagerSlidingTabStrip2;
@@ -19,8 +20,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         initViews();
+        fullScreen(true);
     }
 
     private void initViews(){
@@ -49,5 +50,44 @@ public class MainActivity extends AppCompatActivity {
         mPagerSlidingTabStrip2.setViewPager(mViewPager);
         mPagerSlidingTabStrip2.setIsIndicatorTop(true);
         mPagerSlidingTabStrip3.setViewPager(mViewPager);
+    }
+
+    private void fullScreen(boolean isFullScreen) {
+        if (isFullScreen) {
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.flags = params.flags | WindowManager.LayoutParams.FLAG_FULLSCREEN;
+            getWindow().setAttributes(params);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        } else {
+            WindowManager.LayoutParams params = getWindow().getAttributes();
+            params.flags = params.flags & (~WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            getWindow().setAttributes(params);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+    }
+
+    @Override
+    protected void getExtra() {
+
+    }
+
+    @Override
+    protected int bindLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void queryData() {
+
+    }
+
+    @Override
+    public void goBack() {
+
+    }
+
+    @Override
+    public String setTitle() {
+        return null;
     }
 }
