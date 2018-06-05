@@ -4,7 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import com.example.indicator.PagerSlidingTabStrip;
 
@@ -16,6 +19,7 @@ public class MainActivity extends BaseAppCompatActivity {
     PagerSlidingTabStrip mPagerSlidingTabStrip2;
     PagerSlidingTabStrip mPagerSlidingTabStrip3;
     ViewPager mViewPager;
+    ImageView mArrowIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +54,16 @@ public class MainActivity extends BaseAppCompatActivity {
         mPagerSlidingTabStrip2.setViewPager(mViewPager);
         mPagerSlidingTabStrip2.setIsIndicatorTop(true);
         mPagerSlidingTabStrip3.setViewPager(mViewPager);
+        FrameLayout frameLayout = (FrameLayout) mPagerSlidingTabStrip2.getTabsContainer().getChildAt(3);
+        mArrowIv = new ImageView(this);
+        mArrowIv.setImageResource(R.drawable.lf_ic_city_down);
+        frameLayout.addView(mArrowIv);
+        mPagerSlidingTabStrip2.post(new Runnable() {
+            @Override
+            public void run() {
+                initArrowIv();
+            }
+        });
     }
 
     private void fullScreen(boolean isFullScreen) {
@@ -64,6 +78,15 @@ public class MainActivity extends BaseAppCompatActivity {
             getWindow().setAttributes(params);
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         }
+    }
+
+    private void initArrowIv() {
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mArrowIv.getLayoutParams();
+        params.height = FrameLayout.LayoutParams.MATCH_PARENT;
+        params.width = dip2px(10);
+        params.gravity = Gravity.RIGHT;
+        params.rightMargin = dip2px(4);
+        mArrowIv.setLayoutParams(params);
     }
 
     @Override
@@ -89,5 +112,10 @@ public class MainActivity extends BaseAppCompatActivity {
     @Override
     public String setTitle() {
         return null;
+    }
+
+    public int dip2px(int dip) {
+        float scale = getApplicationContext().getResources().getDisplayMetrics().density;
+        return (int)((float)dip * scale + 0.5F);
     }
 }
